@@ -3,6 +3,7 @@ package com.securityjwt.controller;
 import com.securityjwt.service.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,9 +17,9 @@ public class AuthController {
     }
 
     @PostMapping("/token")
-    public String token(String username, String password){
-        LOG.debug("Token requested for user: '{}'", username);
-        String token = tokenService.generatedToken(username, password);
+    public String token(Authentication authentication){
+        LOG.debug("Token requested for user: '{}'", authentication.getName());
+        String token = tokenService.generatedToken(authentication);
         LOG.debug("Token granted {}", token);
         return token;
     }

@@ -1,7 +1,5 @@
 package com.securityjwt.service;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -18,19 +16,11 @@ public class TokenService {
 
     private final JwtEncoder encoder;
 
-    private final AuthenticationManager authenticationManager;
-
-    public TokenService(JwtEncoder encoder, AuthenticationManager authenticationManager) {
+    public TokenService(JwtEncoder encoder) {
         this.encoder = encoder;
-        this.authenticationManager = authenticationManager;
     }
 
-    public String generatedToken(String username, String password){
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
-        );
-
+    public String generatedToken(Authentication authentication){
         Instant now = Instant.now();
         String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -38,7 +28,7 @@ public class TokenService {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
-                .expiresAt(now.plus(5, ChronoUnit.MINUTES))
+                .expiresAt(now.plus(1, ChronoUnit.HOURS))
                 .subject(authentication.getName())
                 .claim("scope",scope)
                 .build();
