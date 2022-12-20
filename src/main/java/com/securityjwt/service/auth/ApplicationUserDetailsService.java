@@ -1,9 +1,7 @@
 package com.securityjwt.service.auth;
 
-import com.securityjwt.entity.Utilisateur;
-import com.securityjwt.exception.EntityNotFoundException;
-import com.securityjwt.exception.ErrorCodes;
-import com.securityjwt.repository.UtilisateurRepository;
+import com.securityjwt.dto.UtilisateurDto;
+import com.securityjwt.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,17 +14,13 @@ import java.util.Collections;
 @Service
 public class ApplicationUserDetailsService implements UserDetailsService {
     @Autowired
-    private  UtilisateurRepository utilisateurRepository;
+    private UtilisateurService service;
 
 
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
-        Utilisateur utilisateur = utilisateurRepository.findByEmail(email).orElseThrow(()->
-        new EntityNotFoundException("Aucun utilisateur avec l'email fourni", ErrorCodes.UTILISATEUR_NOT_FOUND)
-        );
-
-        return new User(utilisateur.getEmail(),utilisateur.getMotDePasse(), Collections.emptyList());
+        UtilisateurDto utilisateur = service.findByEmail(email);
+        return new User(utilisateur.getEmail(),utilisateur.getMoteDePasse(), Collections.emptyList());
     }
 }

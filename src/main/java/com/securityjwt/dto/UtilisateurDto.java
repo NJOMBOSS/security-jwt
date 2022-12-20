@@ -6,6 +6,8 @@ import com.securityjwt.entity.Utilisateur;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.persistence.Column;
+
 @Data
 @Builder
 public class UtilisateurDto {
@@ -14,7 +16,7 @@ public class UtilisateurDto {
 
     private String email;
 
-    private String motDePasse;
+    private String moteDePasse;
 
 
 
@@ -26,19 +28,19 @@ public class UtilisateurDto {
         return UtilisateurDto.builder()
                 .id(utilisateur.getId())
                 .email(utilisateur.getEmail())
-                .motDePasse(utilisateur.getMotDePasse())
+                .moteDePasse(utilisateur.getMoteDePasse())
                 .build();
     }
 
-    public static Utilisateur toEntity(UtilisateurDto utilisateurDto){
-        if(utilisateurDto == null){
+    public static Utilisateur toEntity(UtilisateurDto dto){
+        if(dto == null){
             return null;
         }
 
         Utilisateur u = new Utilisateur();
-        u.setId(utilisateurDto.getId());
-        u.setEmail(utilisateurDto.getEmail());
-        u.setMotDePasse(utilisateurDto.getMotDePasse());
+        u.setId(dto.getId());
+        u.setEmail(dto.getEmail());
+        u.setMoteDePasse(dto.getMoteDePasse());
 
         return u;
     }

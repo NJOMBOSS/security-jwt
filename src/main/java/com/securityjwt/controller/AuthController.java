@@ -16,11 +16,11 @@ public class AuthController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping("/token")
+ /*   @PostMapping("/token")
     public String token(Authentication authentication){
         LOG.debug("Token requested for user: '{}'", authentication.getName());
         String token = tokenService.generatedToken(authentication);
         LOG.debug("Token granted {}", token);
         return token;
-    }
+    }*/
 }
